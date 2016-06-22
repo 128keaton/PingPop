@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		16016B9D284FCEEB792232E1 /* Pods_PingPop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BB420A0A5ED70CEA049880D /* Pods_PingPop.framework */; };
 		8A6BE70F1D1A40E8008E037A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6BE70E1D1A40E8008E037A /* AppDelegate.swift */; };
 		8A6BE7111D1A40E8008E037A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6BE7101D1A40E8008E037A /* ViewController.swift */; };
 		8A6BE7141D1A40E8008E037A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A6BE7121D1A40E8008E037A /* Main.storyboard */; };
@@ -14,6 +15,10 @@
 		8A6BE7191D1A40E8008E037A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A6BE7171D1A40E8008E037A /* LaunchScreen.storyboard */; };
 		8A6BE7241D1A40E8008E037A /* PingPopTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6BE7231D1A40E8008E037A /* PingPopTests.swift */; };
 		8A6BE72F1D1A40E8008E037A /* PingPopUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6BE72E1D1A40E8008E037A /* PingPopUITests.swift */; };
+		8A6BE73D1D1A41AB008E037A /* PopNet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6BE73C1D1A41AB008E037A /* PopNet.swift */; };
+		8A6BE7411D1A5472008E037A /* beep-holdtone.aif in Resources */ = {isa = PBXBuildFile; fileRef = 8A6BE7401D1A5472008E037A /* beep-holdtone.aif */; };
+		8AAE453E1D1A6372008F6CFC /* ChooseFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE453D1D1A6372008F6CFC /* ChooseFile.swift */; };
+		8AAE45401D1A71AF008F6CFC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE453F1D1A71AF008F6CFC /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4BB420A0A5ED70CEA049880D /* Pods_PingPop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PingPop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A6BE70B1D1A40E8008E037A /* PingPop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PingPop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A6BE70E1D1A40E8008E037A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8A6BE7101D1A40E8008E037A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -47,6 +53,12 @@
 		8A6BE72A1D1A40E8008E037A /* PingPopUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PingPopUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A6BE72E1D1A40E8008E037A /* PingPopUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PingPopUITests.swift; sourceTree = "<group>"; };
 		8A6BE7301D1A40E8008E037A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8A6BE73C1D1A41AB008E037A /* PopNet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PopNet.swift; path = ../PopNet.swift; sourceTree = "<group>"; };
+		8A6BE7401D1A5472008E037A /* beep-holdtone.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = "beep-holdtone.aif"; sourceTree = "<group>"; };
+		8AAE453D1D1A6372008F6CFC /* ChooseFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseFile.swift; sourceTree = "<group>"; };
+		8AAE453F1D1A71AF008F6CFC /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A5F2BC60B318F0A9FCAE5FFB /* Pods-PingPop.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PingPop.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PingPop/Pods-PingPop.debug.xcconfig"; sourceTree = "<group>"; };
+		FD03F74298E24F71B86C2E67 /* Pods-PingPop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PingPop.release.xcconfig"; path = "Pods/Target Support Files/Pods-PingPop/Pods-PingPop.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				16016B9D284FCEEB792232E1 /* Pods_PingPop.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,6 +87,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		448FFDE1B3C9B5C2ED41D231 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4BB420A0A5ED70CEA049880D /* Pods_PingPop.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		8A6BE7021D1A40E8008E037A = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +102,8 @@
 				8A6BE7221D1A40E8008E037A /* PingPopTests */,
 				8A6BE72D1D1A40E8008E037A /* PingPopUITests */,
 				8A6BE70C1D1A40E8008E037A /* Products */,
+				A18B0BA9562B00F721496A36 /* Pods */,
+				448FFDE1B3C9B5C2ED41D231 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -97,12 +120,16 @@
 		8A6BE70D1D1A40E8008E037A /* PingPop */ = {
 			isa = PBXGroup;
 			children = (
+				8A6BE7401D1A5472008E037A /* beep-holdtone.aif */,
+				8A6BE73C1D1A41AB008E037A /* PopNet.swift */,
 				8A6BE70E1D1A40E8008E037A /* AppDelegate.swift */,
 				8A6BE7101D1A40E8008E037A /* ViewController.swift */,
+				8AAE453F1D1A71AF008F6CFC /* SettingsView.swift */,
 				8A6BE7121D1A40E8008E037A /* Main.storyboard */,
 				8A6BE7151D1A40E8008E037A /* Assets.xcassets */,
 				8A6BE7171D1A40E8008E037A /* LaunchScreen.storyboard */,
 				8A6BE71A1D1A40E8008E037A /* Info.plist */,
+				8AAE453D1D1A6372008F6CFC /* ChooseFile.swift */,
 			);
 			path = PingPop;
 			sourceTree = "<group>";
@@ -125,6 +152,15 @@
 			path = PingPopUITests;
 			sourceTree = "<group>";
 		};
+		A18B0BA9562B00F721496A36 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A5F2BC60B318F0A9FCAE5FFB /* Pods-PingPop.debug.xcconfig */,
+				FD03F74298E24F71B86C2E67 /* Pods-PingPop.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -132,9 +168,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8A6BE7331D1A40E8008E037A /* Build configuration list for PBXNativeTarget "PingPop" */;
 			buildPhases = (
+				1C694129C339A74BF4AF974C /* [CP] Check Pods Manifest.lock */,
 				8A6BE7071D1A40E8008E037A /* Sources */,
 				8A6BE7081D1A40E8008E037A /* Frameworks */,
 				8A6BE7091D1A40E8008E037A /* Resources */,
+				C4E9CBE4A9CFA954CE08F74E /* [CP] Embed Pods Frameworks */,
+				3FA2F1A87494AC095B9CA4C5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -193,6 +232,8 @@
 				TargetAttributes = {
 					8A6BE70A1D1A40E8008E037A = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = Z48RKT6B3T;
+						DevelopmentTeamName = "Tim Burleson";
 					};
 					8A6BE71E1D1A40E8008E037A = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -230,6 +271,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A6BE7191D1A40E8008E037A /* LaunchScreen.storyboard in Resources */,
+				8A6BE7411D1A5472008E037A /* beep-holdtone.aif in Resources */,
 				8A6BE7161D1A40E8008E037A /* Assets.xcassets in Resources */,
 				8A6BE7141D1A40E8008E037A /* Main.storyboard in Resources */,
 			);
@@ -251,13 +293,64 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		1C694129C339A74BF4AF974C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		3FA2F1A87494AC095B9CA4C5 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PingPop/Pods-PingPop-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C4E9CBE4A9CFA954CE08F74E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PingPop/Pods-PingPop-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		8A6BE7071D1A40E8008E037A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AAE45401D1A71AF008F6CFC /* SettingsView.swift in Sources */,
+				8AAE453E1D1A6372008F6CFC /* ChooseFile.swift in Sources */,
 				8A6BE7111D1A40E8008E037A /* ViewController.swift in Sources */,
 				8A6BE70F1D1A40E8008E037A /* AppDelegate.swift in Sources */,
+				8A6BE73D1D1A41AB008E037A /* PopNet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -397,9 +490,11 @@
 		};
 		8A6BE7341D1A40E8008E037A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A5F2BC60B318F0A9FCAE5FFB /* Pods-PingPop.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = PingPop/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bittank.PingPop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -408,9 +503,11 @@
 		};
 		8A6BE7351D1A40E8008E037A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FD03F74298E24F71B86C2E67 /* Pods-PingPop.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = PingPop/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bittank.PingPop;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -482,6 +579,7 @@
 				8A6BE7351D1A40E8008E037A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8A6BE7361D1A40E8008E037A /* Build configuration list for PBXNativeTarget "PingPopTests" */ = {
 			isa = XCConfigurationList;
@@ -490,6 +588,7 @@
 				8A6BE7381D1A40E8008E037A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8A6BE7391D1A40E8008E037A /* Build configuration list for PBXNativeTarget "PingPopUITests" */ = {
 			isa = XCConfigurationList;
@@ -498,6 +597,7 @@
 				8A6BE73B1D1A40E8008E037A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
