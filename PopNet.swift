@@ -69,7 +69,7 @@ class PopNet : NSObject {
 extension PopNet : MCNearbyServiceAdvertiserDelegate {
     
     
-    func advertiser(advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: NSData?, invitationHandler: (Bool, MCSession) -> Void) {
+    func advertiser(advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: NSData?, invitationHandler: (Bool, MCSession?) -> Void) {
         print("yo")
         invitationHandler(true, self.session)
     }
