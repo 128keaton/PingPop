@@ -60,7 +60,7 @@ class PopNet : NSObject {
                             MBProgressHUD.hideAllHUDsForView(rootView, animated: true)
                     }
                 })
-                 NSTimer.scheduledTimerWithTimeInterval(15, target: self, selector: #selector(PopNet.cancel), userInfo: nil, repeats: true)
+                 NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: #selector(PopNet.cancel), userInfo: nil, repeats: false)
             }
             }
     }

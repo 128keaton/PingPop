@@ -20,13 +20,26 @@
                             <frame key="frameInset" minY="118" width="375" height="293"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mhj-L1-JWn">
+                                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="157" id="WJU-27-Tpz"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                    <state key="normal" title="Choose">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <segue destination="ISa-k9-oQn" kind="show" id="Txp-ka-cyO"/>
+                                    </connections>
+                                </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pGB-zK-Chy">
                                     <color key="backgroundColor" red="0.0023689060760000002" green="0.83427483970000005" blue="0.003675573467" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="64" id="XlL-sy-wWd"/>
+                                        <constraint firstAttribute="height" constant="30" id="kEP-rE-jhi"/>
                                         <constraint firstAttribute="width" constant="157" id="nGg-1X-b59"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                     <state key="normal" title="Send">
                                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </state>
@@ -34,21 +47,33 @@
                                         <action selector="sendMessage" destination="i5u-XL-yKC" eventType="touchUpInside" id="gyQ-05-eqA"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mhj-L1-JWn">
-                                    <state key="normal" title="Choose File"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nZ8-bO-VNy">
+                                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="157" id="AgS-i1-Vak"/>
+                                        <constraint firstAttribute="height" constant="30" id="gLj-1b-3UH"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                    <state key="normal" title="Stop">
+                                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
                                     <connections>
-                                        <segue destination="ISa-k9-oQn" kind="show" id="Txp-ka-cyO"/>
+                                        <action selector="killSwitch" destination="i5u-XL-yKC" eventType="touchUpInside" id="oBo-Tu-Wgq"/>
                                     </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
-                                <constraint firstAttribute="bottom" secondItem="pGB-zK-Chy" secondAttribute="bottom" constant="8" id="9qp-eT-7wg"/>
+                                <constraint firstItem="Mhj-L1-JWn" firstAttribute="leading" secondItem="pGB-zK-Chy" secondAttribute="leading" id="8tD-jR-t5M"/>
+                                <constraint firstAttribute="bottom" secondItem="pGB-zK-Chy" secondAttribute="bottom" constant="42" id="9qp-eT-7wg"/>
                                 <constraint firstItem="Mhj-L1-JWn" firstAttribute="centerX" secondItem="pGB-zK-Chy" secondAttribute="centerX" id="NSz-TZ-Ojm"/>
-                                <constraint firstItem="pGB-zK-Chy" firstAttribute="centerY" secondItem="bdF-lD-0kI" secondAttribute="centerY" constant="106.5" id="cVd-Ux-ab6"/>
-                                <constraint firstItem="Mhj-L1-JWn" firstAttribute="width" secondItem="bdF-lD-0kI" secondAttribute="width" id="eat-6L-wON"/>
-                                <constraint firstItem="Mhj-L1-JWn" firstAttribute="top" secondItem="bdF-lD-0kI" secondAttribute="top" constant="56" id="igB-jx-ebN"/>
+                                <constraint firstItem="pGB-zK-Chy" firstAttribute="centerY" secondItem="bdF-lD-0kI" secondAttribute="centerY" constant="89.5" id="cVd-Ux-ab6"/>
+                                <constraint firstItem="pGB-zK-Chy" firstAttribute="top" secondItem="Mhj-L1-JWn" secondAttribute="bottom" constant="8" symbolic="YES" id="csl-OJ-Ce1"/>
+                                <constraint firstItem="Mhj-L1-JWn" firstAttribute="width" secondItem="bdF-lD-0kI" secondAttribute="width" constant="-218" id="eat-6L-wON"/>
+                                <constraint firstItem="Mhj-L1-JWn" firstAttribute="top" secondItem="bdF-lD-0kI" secondAttribute="top" constant="183" id="igB-jx-ebN"/>
+                                <constraint firstItem="nZ8-bO-VNy" firstAttribute="leading" secondItem="pGB-zK-Chy" secondAttribute="leading" id="jCH-as-b4s"/>
                                 <constraint firstItem="pGB-zK-Chy" firstAttribute="centerX" secondItem="bdF-lD-0kI" secondAttribute="centerX" id="pJ2-xY-iEu"/>
+                                <constraint firstItem="nZ8-bO-VNy" firstAttribute="top" secondItem="pGB-zK-Chy" secondAttribute="bottom" constant="8" symbolic="YES" id="veM-B6-ujQ"/>
                             </constraints>
                         </view>
                         <prototypes>
@@ -62,12 +87,13 @@
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xfF-Hk-YYB">
                                             <frame key="frameInset" minX="15" width="345" height="43"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.0023689060760000002" green="0.83427483970000005" blue="0.003675573467" alpha="1" colorSpace="calibratedRGB"/>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -145,6 +171,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>

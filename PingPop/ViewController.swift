@@ -22,15 +22,19 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
         super.viewDidLoad()
         self.updateView()
         pingPopManager?.delegate = self
-        sendButton?.layer.cornerRadius = 10
-        sendButton?.layer.borderWidth = 2
-        sendButton?.layer.borderColor = UIColor.whiteColor().CGColor
-        // Do any additional setup after loading the view, typically from a nib.
-        mediaPicker = MPMediaPickerController.self(mediaTypes:MPMediaType.Music)
-        mediaPicker!.allowsPickingMultipleItems = false
-        mediaPicker!.delegate = self;
+        sendButton?.layer.cornerRadius = 13
+
+        chooseButton?.layer.cornerRadius = 13
+
     }
 
+    @IBAction func killSwitch(){
+        do{
+            try AVAudioSession.sharedInstance().setActive(false)
+        } catch _{
+            print("error")
+        }
+    }
     @IBAction func chooseMusic(){
         self.presentViewController(mediaPicker!, animated: true, completion: nil)
     }
@@ -54,17 +58,7 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
             print("not custom")
         }
     }
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if connectedDevicesList!.count == 0{
-            let message = UILabel.init(frame: self.view.frame)
-            message.text = "No devices found"
-            message.textAlignment = .Center
-            self.tableView.backgroundView = message
-            self.tableView.separatorStyle = .None
-    
-        }
-        return 1
-    }
+
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (connectedDevicesList?.count)!
     }
