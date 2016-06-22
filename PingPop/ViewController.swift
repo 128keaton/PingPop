@@ -16,6 +16,7 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
     var connectedDevicesList: [String]? = []
     var audioPlayer = AVAudioPlayer()
     @IBOutlet weak var sendButton: UIButton?
+    @IBOutlet weak var chooseButton: UIButton?
     var mediaPicker: MPMediaPickerController? = nil
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +44,7 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
     func mediaPicker(mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
 
     }
+    
     @IBAction func sendMessage(){
         if NSUserDefaults.standardUserDefaults().objectForKey("music") != nil {
             pingPopManager?.sendMessage(NSUserDefaults.standardUserDefaults().URLForKey("music")!)
@@ -63,7 +65,16 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
         cell.textLabel?.text = connectedDevicesList![indexPath.row]
         return cell
     }
+    override func viewWillDisappear(animated: Bool) {
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("music")
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
     func updateView(){
+        if NSUserDefaults.standardUserDefaults().objectForKey("music") != nil {
+    
+            chooseButton?.setTitle(NSUserDefaults.standardUserDefaults().URLForKey("music")?.lastPathComponent, forState: UIControlState.Normal)
+            
+        }
         print("todo")
     }
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -89,6 +100,9 @@ extension ViewController: PopNetMessageDelegate{
         try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
         try! AVAudioSession.sharedInstance().setActive(true)
         try! audioPlayer = AVAudioPlayer(data: NSData(contentsOfURL: message)!)
+        if NSUserDefaults.standardUserDefaults().boolForKey("loop") == true {
+            audioPlayer.numberOfLoops = -1
+        }
         audioPlayer.prepareToPlay()
         audioPlayer.play()
         
@@ -104,6 +118,9 @@ extension ViewController: PopNetMessageDelegate{
         try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
         try! AVAudioSession.sharedInstance().setActive(true)
         try! audioPlayer = AVAudioPlayer(data: message)
+        if NSUserDefaults.standardUserDefaults().boolForKey("loop") == true {
+            audioPlayer.numberOfLoops = -1
+        }
         audioPlayer.prepareToPlay()
         audioPlayer.play()
     

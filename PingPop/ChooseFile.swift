@@ -21,6 +21,9 @@ class ChooseFile: UITableViewController {
         }
         
     }
+    @IBAction func exit(){
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell")
         cell?.textLabel?.text = fileList![indexPath.row].lastPathComponent
