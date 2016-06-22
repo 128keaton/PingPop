@@ -55,6 +55,14 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
         }
     }
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        if connectedDevicesList!.count == 0{
+            let message = UILabel.init(frame: self.view.frame)
+            message.text = "No devices found"
+            message.textAlignment = .Center
+            self.tableView.backgroundView = message
+            self.tableView.separatorStyle = .None
+    
+        }
         return 1
     }
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

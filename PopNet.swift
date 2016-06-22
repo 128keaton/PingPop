@@ -134,8 +134,18 @@ extension PopNet : MCSessionDelegate {
         print("we just got a resource, we just got a resource. I wonder who its from?")
     }
     func session(session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, atURL localURL: NSURL, withError error: NSError?) {
+        let notification = UILocalNotification()
+        notification.fireDate = NSDate(timeIntervalSinceNow: 5)
+        notification.alertBody = "Ping!"
+        notification.alertAction = "Recieve sound file"
+        notification.soundName = localURL.absoluteString
+        UIApplication.sharedApplication().scheduleLocalNotification(notification)
+        
         print("oh, its from \(peerID)")
-        self.delegate?.playURL(self, message: localURL)
+        if UIApplication.sharedApplication().applicationState == UIApplicationState.Active{
+        
+            self.delegate?.playURL(self, message: localURL)
+        }
     }
     
 }
