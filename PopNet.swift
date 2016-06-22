@@ -45,6 +45,9 @@ class PopNet : NSObject {
         self.serviceAdvertiser.stopAdvertisingPeer()
         self.serviceBrowser.stopBrowsingForPeers()
     }
+    func cancel(){
+        MBProgressHUD.hideAllHUDsForView((self.delegate as! ViewController).view, animated: true)
+    }
     func sendMessage(messageType : NSURL) {
         print("sending message")
         if session.connectedPeers.count > 0 {
@@ -57,6 +60,7 @@ class PopNet : NSObject {
                             MBProgressHUD.hideAllHUDsForView(rootView, animated: true)
                     }
                 })
+                 NSTimer.scheduledTimerWithTimeInterval(15, target: self, selector: #selector(PopNet.cancel), userInfo: nil, repeats: true)
             }
             }
     }

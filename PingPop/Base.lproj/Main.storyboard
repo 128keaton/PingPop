@@ -175,7 +175,7 @@
                     <toolbarItems/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="667"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="1d7-cS-7aV">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="1d7-cS-7aV">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.0023689060760000002" green="0.83427483970000005" blue="0.003675573467" alpha="1" colorSpace="calibratedRGB"/>
@@ -285,7 +285,7 @@
                     <toolbarItems/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="667"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="MU2-cX-4Hh">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="MU2-cX-4Hh">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.0023689060760000002" green="0.83427483970000005" blue="0.003675573467" alpha="1" colorSpace="calibratedRGB"/>
