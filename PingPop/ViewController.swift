@@ -17,13 +17,14 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
     var audioPlayer = AVAudioPlayer()
     @IBOutlet weak var sendButton: UIButton?
     @IBOutlet weak var chooseButton: UIButton?
+    @IBOutlet weak var stopButton: UIButton?
     var mediaPicker: MPMediaPickerController? = nil
     override func viewDidLoad() {
         super.viewDidLoad()
         self.updateView()
         pingPopManager?.delegate = self
         sendButton?.layer.cornerRadius = 13
-
+        stopButton?.layer.cornerRadius = 13
         chooseButton?.layer.cornerRadius = 13
 
     }
