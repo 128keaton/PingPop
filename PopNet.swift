@@ -45,6 +45,9 @@ class PopNet : NSObject {
         self.serviceAdvertiser.stopAdvertisingPeer()
         self.serviceBrowser.stopBrowsingForPeers()
     }
+    func cancel(){
+        MBProgressHUD.hideAllHUDsForView((self.delegate as! ViewController).view, animated: true)
+    }
     func sendMessage(messageType : NSURL) {
         print("sending message")
         if session.connectedPeers.count > 0 {
@@ -57,6 +60,7 @@ class PopNet : NSObject {
                             MBProgressHUD.hideAllHUDsForView(rootView, animated: true)
                     }
                 })
+                 NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: #selector(PopNet.cancel), userInfo: nil, repeats: false)
             }
             }
     }
@@ -69,7 +73,7 @@ class PopNet : NSObject {
 extension PopNet : MCNearbyServiceAdvertiserDelegate {
     
     
-    func advertiser(advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: NSData?, invitationHandler: (Bool, MCSession) -> Void) {
+    func advertiser(advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: NSData?, invitationHandler: (Bool, MCSession?) -> Void) {
         print("yo")
         invitationHandler(true, self.session)
     }
@@ -134,8 +138,18 @@ extension PopNet : MCSessionDelegate {
         print("we just got a resource, we just got a resource. I wonder who its from?")
     }
     func session(session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, atURL localURL: NSURL, withError error: NSError?) {
+        let notification = UILocalNotification()
+        notification.fireDate = NSDate(timeIntervalSinceNow: 5)
+        notification.alertBody = "Ping!"
+        notification.alertAction = "Recieve sound file"
+        notification.soundName = localURL.absoluteString
+        UIApplication.sharedApplication().scheduleLocalNotification(notification)
+        
         print("oh, its from \(peerID)")
-        self.delegate?.playURL(self, message: localURL)
+        if UIApplication.sharedApplication().applicationState == UIApplicationState.Active{
+        
+            self.delegate?.playURL(self, message: localURL)
+        }
     }
     
 }

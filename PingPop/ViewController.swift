@@ -16,20 +16,26 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
     var connectedDevicesList: [String]? = []
     var audioPlayer = AVAudioPlayer()
     @IBOutlet weak var sendButton: UIButton?
+    @IBOutlet weak var chooseButton: UIButton?
+    @IBOutlet weak var stopButton: UIButton?
     var mediaPicker: MPMediaPickerController? = nil
     override func viewDidLoad() {
         super.viewDidLoad()
         self.updateView()
         pingPopManager?.delegate = self
-        sendButton?.layer.cornerRadius = 10
-        sendButton?.layer.borderWidth = 2
-        sendButton?.layer.borderColor = UIColor.whiteColor().CGColor
-        // Do any additional setup after loading the view, typically from a nib.
-        mediaPicker = MPMediaPickerController.self(mediaTypes:MPMediaType.Music)
-        mediaPicker!.allowsPickingMultipleItems = false
-        mediaPicker!.delegate = self;
+        sendButton?.layer.cornerRadius = 13
+        stopButton?.layer.cornerRadius = 13
+        chooseButton?.layer.cornerRadius = 13
+
     }
 
+    @IBAction func killSwitch(){
+        do{
+            try AVAudioSession.sharedInstance().setActive(false)
+        } catch _{
+            print("error")
+        }
+    }
     @IBAction func chooseMusic(){
         self.presentViewController(mediaPicker!, animated: true, completion: nil)
     }
@@ -43,6 +49,7 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
     func mediaPicker(mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
 
     }
+    
     @IBAction func sendMessage(){
         if NSUserDefaults.standardUserDefaults().objectForKey("music") != nil {
             pingPopManager?.sendMessage(NSUserDefaults.standardUserDefaults().URLForKey("music")!)
@@ -52,9 +59,7 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
             print("not custom")
         }
     }
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
+
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (connectedDevicesList?.count)!
     }
@@ -63,7 +68,16 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
         cell.textLabel?.text = connectedDevicesList![indexPath.row]
         return cell
     }
+    override func viewWillDisappear(animated: Bool) {
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("music")
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
     func updateView(){
+        if NSUserDefaults.standardUserDefaults().objectForKey("music") != nil {
+    
+            chooseButton?.setTitle(NSUserDefaults.standardUserDefaults().URLForKey("music")?.lastPathComponent, forState: UIControlState.Normal)
+            
+        }
         print("todo")
     }
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -89,6 +103,9 @@ extension ViewController: PopNetMessageDelegate{
         try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
         try! AVAudioSession.sharedInstance().setActive(true)
         try! audioPlayer = AVAudioPlayer(data: NSData(contentsOfURL: message)!)
+        if NSUserDefaults.standardUserDefaults().boolForKey("loop") == true {
+            audioPlayer.numberOfLoops = -1
+        }
         audioPlayer.prepareToPlay()
         audioPlayer.play()
         
@@ -104,6 +121,9 @@ extension ViewController: PopNetMessageDelegate{
         try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
         try! AVAudioSession.sharedInstance().setActive(true)
         try! audioPlayer = AVAudioPlayer(data: message)
+        if NSUserDefaults.standardUserDefaults().boolForKey("loop") == true {
+            audioPlayer.numberOfLoops = -1
+        }
         audioPlayer.prepareToPlay()
         audioPlayer.play()
     

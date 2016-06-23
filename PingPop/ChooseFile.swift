@@ -21,6 +21,20 @@ class ChooseFile: UITableViewController {
         }
         
     }
+    @IBAction func exit(){
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        if fileList?.count == 0{
+            let message = UILabel.init(frame: self.view.frame)
+            message.text = "No audio, use iTunes to add some"
+            message.textAlignment = .Center
+            self.tableView.backgroundView = message
+            self.tableView.separatorStyle = .None
+            return 0
+        }
+        return 1
+    }
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell")
         cell?.textLabel?.text = fileList![indexPath.row].lastPathComponent
