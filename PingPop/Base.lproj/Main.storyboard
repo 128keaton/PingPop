@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11129.15" systemVersion="15F18c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="i5u-XL-yKC">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11103.10"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,10 +21,10 @@
                             <frame key="frameInset" width="375" height="335"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gfq-ok-X5h">
+                                <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gfq-ok-X5h">
                                     <color key="backgroundColor" white="0.66666666666666663" alpha="0.51705280172413792" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" secondItem="gfq-ok-X5h" secondAttribute="height" multiplier="1:1" id="aLG-M6-yc6"/>
+                                        <constraint firstAttribute="height" constant="224" id="trr-vX-n7S"/>
                                         <constraint firstAttribute="width" constant="224" id="wtY-Hs-TX6"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="20"/>
@@ -39,7 +38,7 @@
                             </subviews>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
-                                <constraint firstItem="gfq-ok-X5h" firstAttribute="leading" secondItem="bdF-lD-0kI" secondAttribute="leading" constant="75" id="3yV-ye-b3D"/>
+                                <constraint firstItem="gfq-ok-X5h" firstAttribute="top" secondItem="bdF-lD-0kI" secondAttribute="top" constant="55" id="7GL-dy-nK8"/>
                                 <constraint firstItem="gfq-ok-X5h" firstAttribute="bottom" secondItem="bdF-lD-0kI" secondAttribute="bottomMargin" constant="-48" id="po3-IC-ggo"/>
                                 <constraint firstItem="gfq-ok-X5h" firstAttribute="centerX" secondItem="bdF-lD-0kI" secondAttribute="centerX" id="r83-4q-DVQ"/>
                             </constraints>
