@@ -17,7 +17,7 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
     let pingPopManager: PopNet? = PopNet()
     var connectedDevicesList: [String]? = []
     var audioPlayer = AVAudioPlayer()
-    @IBOutlet weak var sendButton: UIButton?
+
     @IBOutlet weak var chooseButton: UIButton?
     @IBOutlet weak var stopButton: UIButton?
     var mediaPicker: MPMediaPickerController? = nil
@@ -25,11 +25,15 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
     var blurView: FXBlurView?
     var imageView: UIImageView?
     
+    let pauseColor: UIColor? = UIColor(hue: 0.0222, saturation: 1, brightness: 0.96, alpha: 1.0)
+    var playColor: UIColor?
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         stopButton?.enabled = false
         pingPopManager?.delegate = self
-        sendButton?.layer.cornerRadius = 13
+        playColor = stopButton?.backgroundColor
         stopButton?.layer.cornerRadius = 13
         chooseButton?.layer.cornerRadius = 13
         mediaPicker = MPMediaPickerController.init(mediaTypes: MPMediaType.AnyAudio)
@@ -89,7 +93,9 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
                 self.makeBlurView((item.artwork?.imageWithSize(CGSizeMake(100, 100)))!)
             }
             self.tableView.reloadData()
+            
             sendSong(item)
+            
             
         }else{
             let alert = UIAlertController.init(title: "Error", message: "Song has DRM", preferredStyle: .Alert)
@@ -100,6 +106,7 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
             mediaPicker.presentViewController(alert, animated: true, completion: nil)
         }
     }
+    
     func sendSong(media: MPMediaItem){
     
         MBProgressHUD.showHUDAddedTo(self.view, animated: true)
@@ -112,8 +119,12 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
 
         let titleMedia = randomStringWithLength(25)
         let exportPathString = String(documentsDir) + (titleMedia as String) + ".m4a"
-        chooseButton?.setBackgroundImage(media.artwork?.imageWithSize(CGSizeMake(100, 100)), forState: .Normal)
-        chooseButton?.setTitle("", forState: .Normal)
+        UIView.transitionWithView(self.view, duration: 0.25, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { (action) in
+            self.chooseButton?.setBackgroundImage(media.artwork?.imageWithSize(CGSizeMake(100, 100)), forState: .Normal)
+            self.chooseButton?.setTitle("", forState: .Normal)
+            }, completion: nil)
+        
+      
         print("String path: \(exportPathString)")
         print("Documents path: \(documentsDir)")
         print("Media path: \(titleMedia)")
@@ -231,7 +242,10 @@ extension ViewController: PopNetMessageDelegate{
         try! AVAudioSession.sharedInstance().setActive(true)
         try! audioPlayer = AVAudioPlayer(data: mediaData)
         dispatch_async(dispatch_get_main_queue()) {
-            self.chooseButton?.setBackgroundImage(objectDict?.objectForKey("artwork") as? UIImage, forState: .Normal)
+                   UIView.transitionWithView(self.view, duration: 0.25, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { (action) in
+                      self.chooseButton?.setBackgroundImage(objectDict?.objectForKey("artwork") as? UIImage, forState: .Normal)
+                   }, completion: nil)
+    
             self.makeBlurView((objectDict!.objectForKey("artwork") as? UIImage)!)
             self.chooseButton?.setTitle("", forState: .Normal)
             let objectDict : [String:AnyObject] = ["playing" : true]
@@ -272,9 +286,10 @@ extension ViewController: PopNetMessageDelegate{
                 self.isPlaying = objectDict?.objectForKey("playing") as? Bool
                 self.stopButton?.enabled = true
                 if self.isPlaying == true{
-                    
+                    self.stopButton?.backgroundColor = self.pauseColor
                     self.stopButton?.setTitle("Pause", forState: .Normal)
                 }else{
+                    self.stopButton?.backgroundColor = self.playColor
                     self.stopButton?.setTitle("Play", forState: .Normal)
                 }
             }
