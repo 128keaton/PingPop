@@ -10,6 +10,8 @@ import UIKit
 import AVKit
 import AVFoundation
 import MediaPlayer
+import MBProgressHUD
+import FXBlurView
 
 class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
     let pingPopManager: PopNet? = PopNet()
@@ -19,46 +21,122 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
     @IBOutlet weak var chooseButton: UIButton?
     @IBOutlet weak var stopButton: UIButton?
     var mediaPicker: MPMediaPickerController? = nil
+    var isPlaying: Bool? = false
+    var blurView: FXBlurView?
+    var imageView: UIImageView?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.updateView()
+        stopButton?.enabled = false
         pingPopManager?.delegate = self
         sendButton?.layer.cornerRadius = 13
         stopButton?.layer.cornerRadius = 13
         chooseButton?.layer.cornerRadius = 13
+        mediaPicker = MPMediaPickerController.init(mediaTypes: MPMediaType.AnyAudio)
+        mediaPicker?.delegate = self
+        mediaPicker?.allowsPickingMultipleItems = false
+        
 
+    }
+    func makeBlurView(image: UIImage){
+        self.view.backgroundColor = UIColor.clearColor()
+
+        if imageView == nil{
+            imageView = UIImageView.init(frame: self.view.frame)
+           self.view.insertSubview(imageView!, atIndex: 0)
+        }
+        if blurView == nil{
+            blurView = FXBlurView.init(frame: self.view.frame)
+            blurView!.tintColor = UIColor.blackColor()
+            self.view.insertSubview(blurView!, aboveSubview: imageView!)
+        }
+        imageView!.image = image
     }
 
     @IBAction func killSwitch(){
-        do{
-            try AVAudioSession.sharedInstance().setActive(false)
-        } catch _{
-            print("error")
+        
+        if isPlaying == false{
+            let objectDict : [String:AnyObject] = ["command" : Command.Play.rawValue]
+            print("raw value: \(Command.Pause.rawValue)")
+            self.pingPopManager?.streamMedia(NSKeyedArchiver.archivedDataWithRootObject(objectDict))
+        }else{
+            let objectDict : [String:AnyObject] = ["command" : Command.Pause.rawValue]
+             print("raw value: \(Command.Pause.rawValue)")
+            self.pingPopManager?.streamMedia(NSKeyedArchiver.archivedDataWithRootObject(objectDict))
         }
+    
+
     }
+    
     @IBAction func chooseMusic(){
+        
         self.presentViewController(mediaPicker!, animated: true, completion: nil)
     }
-    override func viewDidAppear(animated: Bool) {
-        self.updateView()
-    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     func mediaPicker(mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
 
-    }
-    
-    @IBAction func sendMessage(){
-        if NSUserDefaults.standardUserDefaults().objectForKey("music") != nil {
-            pingPopManager?.sendMessage(NSUserDefaults.standardUserDefaults().URLForKey("music")!)
-            print("custom")
+        let item = mediaItemCollection.items[0]
+        let url = item.valueForProperty(MPMediaItemPropertyAssetURL)
+        if url != nil{
+            
+            mediaPicker.dismissViewControllerAnimated(true, completion: nil)
+            dispatch_async(dispatch_get_main_queue()) {
+                self.makeBlurView((item.artwork?.imageWithSize(CGSizeMake(100, 100)))!)
+            }
+            self.tableView.reloadData()
+            sendSong(item)
+            
         }else{
-            pingPopManager?.sendMessage(NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("beep-holdtone", ofType: "aif")!))
-            print("not custom")
+            let alert = UIAlertController.init(title: "Error", message: "Song has DRM", preferredStyle: .Alert)
+            let okButton = UIAlertAction.init(title: "Ok", style: .Default, handler: { (action) in
+                alert.dismissViewControllerAnimated(true, completion: nil)
+            })
+            alert.addAction(okButton)
+            mediaPicker.presentViewController(alert, animated: true, completion: nil)
         }
     }
+    func sendSong(media: MPMediaItem){
+    
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+
+        let asset = AVURLAsset.init(URL: media.valueForProperty(MPMediaItemPropertyAssetURL) as! NSURL)
+        
+        let exporter = AVAssetExportSession.init(asset: asset, presetName: AVAssetExportPresetAppleM4A)
+        exporter?.outputFileType = AVFileTypeAppleM4A
+        let documentsDir = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+
+        let titleMedia = randomStringWithLength(25)
+        let exportPathString = String(documentsDir) + (titleMedia as String) + ".m4a"
+        chooseButton?.setBackgroundImage(media.artwork?.imageWithSize(CGSizeMake(100, 100)), forState: .Normal)
+        chooseButton?.setTitle("", forState: .Normal)
+        print("String path: \(exportPathString)")
+        print("Documents path: \(documentsDir)")
+        print("Media path: \(titleMedia)")
+        let exportPath = NSURL(string: exportPathString)
+        print("Export path: \(exportPath!)")
+        exporter?.outputURL = exportPath!
+        exporter?.exportAsynchronouslyWithCompletionHandler({ (action) in
+            if exporter?.status == AVAssetExportSessionStatus.Completed{
+                print("Success!")
+                 dispatch_async(dispatch_get_main_queue()) {
+                    let objectDict : [String:AnyObject] = ["media" : NSData.init(contentsOfURL: exportPath!)!, "artwork" : (media.artwork?.imageWithSize(CGSizeMake(100, 100)))!]
+                    
+                        self.pingPopManager?.streamMedia(NSKeyedArchiver.archivedDataWithRootObject(objectDict))
+                    try! NSFileManager.defaultManager().removeItemAtURL(exportPath!)
+                }
+            }else{
+                try! NSFileManager.defaultManager().removeItemAtURL(exportPath!)
+                print("Error: \(exporter!.error)")
+                MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+            }
+        })
+
+    }
+
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (connectedDevicesList?.count)!
@@ -66,24 +144,13 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         cell.textLabel?.text = connectedDevicesList![indexPath.row]
+        cell.backgroundColor = UIColor.blackColor()
         return cell
     }
     override func viewWillDisappear(animated: Bool) {
         NSUserDefaults.standardUserDefaults().removeObjectForKey("music")
         NSUserDefaults.standardUserDefaults().synchronize()
     }
-    func updateView(){
-        if NSUserDefaults.standardUserDefaults().objectForKey("music") != nil {
-    
-            chooseButton?.setTitle(NSUserDefaults.standardUserDefaults().URLForKey("music")?.lastPathComponent, forState: UIControlState.Normal)
-            
-        }
-        print("todo")
-    }
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "connections"
-    }
-
 }
 
 extension ViewController: PopNetMessageDelegate{
@@ -96,39 +163,128 @@ extension ViewController: PopNetMessageDelegate{
                 self.tableView.reloadSections(NSIndexSet.init(index: 0), withRowAnimation: UITableViewRowAnimation.Left)
             }
         }
-         self.updateView()
+       
         print("changed")
     }
+    func mediaPickerDidCancel(mediaPicker: MPMediaPickerController) {
+        mediaPicker.dismissViewControllerAnimated(true, completion: nil)
+    }
     func playURL(manager: PopNet, message: NSURL) {
+        /*try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
         try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
         try! AVAudioSession.sharedInstance().setActive(true)
+        UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
         try! audioPlayer = AVAudioPlayer(data: NSData(contentsOfURL: message)!)
+        try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
         if NSUserDefaults.standardUserDefaults().boolForKey("loop") == true {
             audioPlayer.numberOfLoops = -1
         }
         audioPlayer.prepareToPlay()
-        audioPlayer.play()
+        audioPlayer.play()*/
+        let file = "command.txt" //this is the file. we will write to and read from it
+        
+        if let dir = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.AllDomainsMask, true).first {
+            let path = NSURL(fileURLWithPath: dir).URLByAppendingPathComponent(file)
+            
+    
+            
+            //reading
+            do {
+                let text2 = try NSString(contentsOfURL: message, encoding: NSUTF8StringEncoding)
+                
+                try NSFileManager.defaultManager().removeItemAtURL(path!)
+                let alert = UIAlertController.init(title: "Command", message: text2 as String, preferredStyle: .Alert)
+                let okButton = UIAlertAction.init(title: "Ok", style: .Default, handler: { (action) in
+                    alert.dismissViewControllerAnimated(true, completion: nil)})
+                alert.addAction(okButton)
+                self.presentViewController(alert, animated: true, completion: nil)
+                print("We gots ourself a co-mand")
+                
+            }catch {/* error handling here */}
+        }
+        
         
         
         print("message Received")
     }
+    func randomStringWithLength (len : Int) -> NSString {
+        
+        let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        
+        let randomString : NSMutableString = NSMutableString(capacity: len)
+        
+        for _ in 0..<len{
+            let length = UInt32 (letters.length)
+            let rand = arc4random_uniform(length)
+            randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
+        }
+        
+        return randomString
+    }
     
     func pingPop(manager: PopNet, message: NSData) {
-  
 
-        
-        // Removed deprecated use of AVAudioSessionDelegate protocol
+        let objectDict:NSDictionary? = NSKeyedUnarchiver.unarchiveObjectWithData(message)! as? NSDictionary
+        if objectDict?.objectForKey("media") != nil{
+        let mediaData = objectDict?.objectForKey("media") as! NSData
         try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
         try! AVAudioSession.sharedInstance().setActive(true)
-        try! audioPlayer = AVAudioPlayer(data: message)
+        try! audioPlayer = AVAudioPlayer(data: mediaData)
+        dispatch_async(dispatch_get_main_queue()) {
+            self.chooseButton?.setBackgroundImage(objectDict?.objectForKey("artwork") as? UIImage, forState: .Normal)
+            self.makeBlurView((objectDict!.objectForKey("artwork") as? UIImage)!)
+            self.chooseButton?.setTitle("", forState: .Normal)
+            let objectDict : [String:AnyObject] = ["playing" : true]
+            self.pingPopManager?.streamMedia(NSKeyedArchiver.archivedDataWithRootObject(objectDict))
+          
+        }
         if NSUserDefaults.standardUserDefaults().boolForKey("loop") == true {
             audioPlayer.numberOfLoops = -1
         }
         audioPlayer.prepareToPlay()
         audioPlayer.play()
-    
+            
+           
+            
+        }else if objectDict?.objectForKey("command") != nil{
+            
+            print("command: \(objectDict?.objectForKey("command")!)")
+            let command = Command(rawValue: objectDict?.objectForKey("command")! as! Int)!
+            switch command{
+                case .Pause:
+                    
+                    
+                    audioPlayer.pause()
+                    let objectDict : [String:AnyObject] = ["playing" : false]
+                    self.pingPopManager?.streamMedia(NSKeyedArchiver.archivedDataWithRootObject(objectDict))
+                    
+                break
+                
+                case .Play:
+                    audioPlayer.play()
+                    let objectDict : [String:AnyObject] = ["playing" : true]
+                    self.pingPopManager?.streamMedia(NSKeyedArchiver.archivedDataWithRootObject(objectDict))
+                break
+            }
+            
+        }else{
+             dispatch_async(dispatch_get_main_queue()) {
+                self.isPlaying = objectDict?.objectForKey("playing") as? Bool
+                self.stopButton?.enabled = true
+                if self.isPlaying == true{
+                    
+                    self.stopButton?.setTitle("Pause", forState: .Normal)
+                }else{
+                    self.stopButton?.setTitle("Play", forState: .Normal)
+                }
+            }
+        }
         
         print("message Received")
     }
 }
 
+enum Command: Int {
+    case Pause = 0
+    case Play
+}

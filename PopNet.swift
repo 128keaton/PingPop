@@ -48,19 +48,47 @@ class PopNet : NSObject {
     func cancel(){
         MBProgressHUD.hideAllHUDsForView((self.delegate as! ViewController).view, animated: true)
     }
-    func sendMessage(messageType : NSURL) {
+    func streamMedia(data: NSData){
+        print("sending message")
+        if session.connectedPeers.count > 0 {
+            for peer in session.connectedPeers{
+     
+              
+                try! session.sendData(data, toPeers: [peer], withMode: MCSessionSendDataMode.Reliable)
+          
+                NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: #selector(PopNet.cancel), userInfo: nil, repeats: false)
+            }
+        }
+    }
+
+    
+    
+    func sendMessage(command: String) {
         print("sending message")
         if session.connectedPeers.count > 0 {
             for peer in session.connectedPeers{
                 let rootView = (self.delegate as! ViewController).view
                 MBProgressHUD.showHUDAddedTo(rootView, animated: true)
-                
-                session.sendResourceAtURL(messageType, withName: messageType.lastPathComponent!, toPeer: peer, withCompletionHandler: {error in print(error)
-                        dispatch_async(dispatch_get_main_queue()) { 
-                            MBProgressHUD.hideAllHUDsForView(rootView, animated: true)
+                let file = "command.txt"
+                if let dir = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.AllDomainsMask, true).first {
+                    let path = NSURL(fileURLWithPath: dir).URLByAppendingPathComponent(file)
+                    
+                 
+                    do {
+                        try NSFileManager.defaultManager().removeItemAtPath(String(path))
+                        try command.writeToURL(path!, atomically: false, encoding: NSUTF8StringEncoding)
+                        
+                        session.sendResourceAtURL(path!, withName: path!.lastPathComponent!, toPeer: peer, withCompletionHandler: {error in print(error)
+                            dispatch_async(dispatch_get_main_queue()) {
+                                MBProgressHUD.hideAllHUDsForView(rootView, animated: true)
+                            }
+                        })
+
                     }
-                })
-                 NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: #selector(PopNet.cancel), userInfo: nil, repeats: false)
+                    catch {/* error handling here */}
+                    
+                }
+                                NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: #selector(PopNet.cancel), userInfo: nil, repeats: false)
             }
             }
     }
@@ -138,12 +166,6 @@ extension PopNet : MCSessionDelegate {
         print("we just got a resource, we just got a resource. I wonder who its from?")
     }
     func session(session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, atURL localURL: NSURL, withError error: NSError?) {
-        let notification = UILocalNotification()
-        notification.fireDate = NSDate(timeIntervalSinceNow: 5)
-        notification.alertBody = "Ping!"
-        notification.alertAction = "Recieve sound file"
-        notification.soundName = localURL.absoluteString
-        UIApplication.sharedApplication().scheduleLocalNotification(notification)
         
         print("oh, its from \(peerID)")
         if UIApplication.sharedApplication().applicationState == UIApplicationState.Active{
