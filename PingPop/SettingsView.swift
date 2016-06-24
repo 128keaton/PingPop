@@ -22,6 +22,7 @@ class SettingsView: UITableViewController {
     @IBAction func killSwitch(){
         do{
           try AVAudioSession.sharedInstance().setActive(false)
+            
         } catch _{
             print("error")
         }
