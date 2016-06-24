@@ -44,6 +44,7 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
         if imageView == nil{
             imageView = UIImageView.init(frame: self.view.frame)
            self.view.insertSubview(imageView!, atIndex: 0)
+            imageView?.contentMode = .ScaleAspectFill
         }
         if blurView == nil{
             blurView = FXBlurView.init(frame: self.view.frame)
@@ -144,8 +145,7 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         cell.textLabel?.text = connectedDevicesList![indexPath.row]
-        cell.backgroundColor = UIColor.blackColor()
-        return cell
+            return cell
     }
     override func viewWillDisappear(animated: Bool) {
         NSUserDefaults.standardUserDefaults().removeObjectForKey("music")
