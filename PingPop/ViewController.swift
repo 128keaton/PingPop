@@ -22,9 +22,12 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
     @IBOutlet weak var stopButton: UIButton?
     var mediaPicker: MPMediaPickerController? = nil
     var isPlaying: Bool? = false
+    var blurView: FXBlurView?
+    var imageView: UIImageView?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        stopButton?.enabled = false
         pingPopManager?.delegate = self
         sendButton?.layer.cornerRadius = 13
         stopButton?.layer.cornerRadius = 13
@@ -37,15 +40,17 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
     }
     func makeBlurView(image: UIImage){
         self.view.backgroundColor = UIColor.clearColor()
-        self.tableView.backgroundColor = UIColor.clearColor()
-        let blurView = FXBlurView.init(frame: self.view.frame)
-        let imageView = UIImageView.init(frame: self.view.frame)
-        
-        imageView.image = image
-        self.view.insertSubview(imageView, belowSubview: self.view)
-        self.view.insertSubview(blurView, aboveSubview: imageView)
-        
-        
+
+        if imageView == nil{
+            imageView = UIImageView.init(frame: self.view.frame)
+           self.view.insertSubview(imageView!, atIndex: 0)
+        }
+        if blurView == nil{
+            blurView = FXBlurView.init(frame: self.view.frame)
+            blurView!.tintColor = UIColor.blackColor()
+            self.view.insertSubview(blurView!, aboveSubview: imageView!)
+        }
+        imageView!.image = image
     }
 
     @IBAction func killSwitch(){
@@ -77,7 +82,12 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
         let item = mediaItemCollection.items[0]
         let url = item.valueForProperty(MPMediaItemPropertyAssetURL)
         if url != nil{
+            
             mediaPicker.dismissViewControllerAnimated(true, completion: nil)
+            dispatch_async(dispatch_get_main_queue()) {
+                self.makeBlurView((item.artwork?.imageWithSize(CGSizeMake(100, 100)))!)
+            }
+            self.tableView.reloadData()
             sendSong(item)
             
         }else{
@@ -90,7 +100,9 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
         }
     }
     func sendSong(media: MPMediaItem){
+    
         MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+
         let asset = AVURLAsset.init(URL: media.valueForProperty(MPMediaItemPropertyAssetURL) as! NSURL)
         
         let exporter = AVAssetExportSession.init(asset: asset, presetName: AVAssetExportPresetAppleM4A)
@@ -112,7 +124,7 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
                 print("Success!")
                  dispatch_async(dispatch_get_main_queue()) {
                     let objectDict : [String:AnyObject] = ["media" : NSData.init(contentsOfURL: exportPath!)!, "artwork" : (media.artwork?.imageWithSize(CGSizeMake(100, 100)))!]
-                        self.makeBlurView((media.artwork?.imageWithSize(CGSizeMake(100, 100)))!)
+                    
                         self.pingPopManager?.streamMedia(NSKeyedArchiver.archivedDataWithRootObject(objectDict))
                     try! NSFileManager.defaultManager().removeItemAtURL(exportPath!)
                 }
@@ -132,17 +144,13 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         cell.textLabel?.text = connectedDevicesList![indexPath.row]
+        cell.backgroundColor = UIColor.blackColor()
         return cell
     }
     override func viewWillDisappear(animated: Bool) {
         NSUserDefaults.standardUserDefaults().removeObjectForKey("music")
         NSUserDefaults.standardUserDefaults().synchronize()
     }
-    
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "connections"
-    }
-
 }
 
 extension ViewController: PopNetMessageDelegate{
@@ -262,8 +270,9 @@ extension ViewController: PopNetMessageDelegate{
         }else{
              dispatch_async(dispatch_get_main_queue()) {
                 self.isPlaying = objectDict?.objectForKey("playing") as? Bool
-                
+                self.stopButton?.enabled = true
                 if self.isPlaying == true{
+                    
                     self.stopButton?.setTitle("Pause", forState: .Normal)
                 }else{
                     self.stopButton?.setTitle("Play", forState: .Normal)
