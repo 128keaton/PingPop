@@ -112,8 +112,8 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
                 print("Success!")
                  dispatch_async(dispatch_get_main_queue()) {
                     let objectDict : [String:AnyObject] = ["media" : NSData.init(contentsOfURL: exportPath!)!, "artwork" : (media.artwork?.imageWithSize(CGSizeMake(100, 100)))!]
-
-                    self.pingPopManager?.streamMedia(NSKeyedArchiver.archivedDataWithRootObject(objectDict))
+                        self.makeBlurView((media.artwork?.imageWithSize(CGSizeMake(100, 100)))!)
+                        self.pingPopManager?.streamMedia(NSKeyedArchiver.archivedDataWithRootObject(objectDict))
                     try! NSFileManager.defaultManager().removeItemAtURL(exportPath!)
                 }
             }else{
@@ -224,9 +224,11 @@ extension ViewController: PopNetMessageDelegate{
         try! audioPlayer = AVAudioPlayer(data: mediaData)
         dispatch_async(dispatch_get_main_queue()) {
             self.chooseButton?.setBackgroundImage(objectDict?.objectForKey("artwork") as? UIImage, forState: .Normal)
+            self.makeBlurView((objectDict!.objectForKey("artwork") as? UIImage)!)
             self.chooseButton?.setTitle("", forState: .Normal)
             let objectDict : [String:AnyObject] = ["playing" : true]
             self.pingPopManager?.streamMedia(NSKeyedArchiver.archivedDataWithRootObject(objectDict))
+          
         }
         if NSUserDefaults.standardUserDefaults().boolForKey("loop") == true {
             audioPlayer.numberOfLoops = -1
