@@ -29,9 +29,6 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
     let pauseColor: UIColor? = UIColor(hue: 0.0222, saturation: 1, brightness: 0.96, alpha: 1.0)
     var playColor: UIColor?
     
-
-    
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +43,8 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
         mediaPicker?.allowsPickingMultipleItems = false
         stopButton?.alpha = 0
  
+        self.navigationItem.title = "Nothing Playing"
+        self.navigationItem.prompt = nil
 
     }
     func makeBlurView(image: UIImage){
@@ -92,18 +91,34 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
     }
     func mediaPicker(mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
 
+        let hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        hud.mode = .Indeterminate
+        
+        hud.addGestureRecognizer(UITapGestureRecognizer.init(target: nil, action: #selector(stopHUD)))
+
+        
         let item = mediaItemCollection.items[0]
         let url = item.valueForProperty(MPMediaItemPropertyAssetURL)
         if url != nil{
-            
+             if (item.title != nil && item.artist != nil && item.artwork != nil){
             mediaPicker.dismissViewControllerAnimated(true, completion: nil)
             dispatch_async(dispatch_get_main_queue()) {
                 self.makeBlurView((item.artwork?.imageWithSize(CGSizeMake(100, 100)))!)
             }
             self.tableView.reloadData()
+            self.navigationItem.title = "Playing: " + item.title!
+            self.navigationItem.prompt = "Artist: " + item.artist! + " Album: " + item.albumTitle!
             
             sendSong(item)
-            
+                
+            }else{
+                let alert = UIAlertController.init(title: "Error", message: "Missing Song Values", preferredStyle: .Alert)
+                let okButton = UIAlertAction.init(title: "Ok", style: .Default, handler: { (action) in
+                    alert.dismissViewControllerAnimated(true, completion: nil)
+                })
+                alert.addAction(okButton)
+                mediaPicker.presentViewController(alert, animated: true, completion: nil)
+            }
             
         }else{
             let alert = UIAlertController.init(title: "Error", message: "Song has DRM", preferredStyle: .Alert)
@@ -115,11 +130,11 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
         }
     }
 
-    
+    func stopHUD(){
+        MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+    }
     func sendSong(media: MPMediaItem){
-    
-        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-
+        
         let asset = AVURLAsset.init(URL: media.valueForProperty(MPMediaItemPropertyAssetURL) as! NSURL)
         
         let exporter = AVAssetExportSession.init(asset: asset, presetName: AVAssetExportPresetAppleM4A)

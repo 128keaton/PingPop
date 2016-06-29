@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11129.15" systemVersion="15F18c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="i5u-XL-yKC">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11129.15" systemVersion="15F18c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="N7E-5e-86y">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11103.10"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Ping!-->
+        <!--Song: Feel Good Inc-->
         <scene sceneID="Puw-0r-Twf">
             <objects>
                 <tableViewController id="i5u-XL-yKC" customClass="ViewController" customModule="PingPop" customModuleProvider="target" sceneMemberID="viewController">
@@ -18,7 +18,7 @@
                         <color key="sectionIndexColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="sectionIndexBackgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="bdF-lD-0kI">
-                            <frame key="frameInset" width="375" height="335"/>
+                            <frame key="frameInset" minY="94" width="375" height="335"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gfq-ok-X5h">
@@ -35,13 +35,6 @@
                                         <action selector="chooseMusic" destination="i5u-XL-yKC" eventType="touchUpInside" id="MHW-s6-A47"/>
                                     </connections>
                                 </button>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6iZ-6K-YgL">
-                                    <frame key="frameInset" minX="8" minY="314" width="359" height="21"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
                             </subviews>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
@@ -51,7 +44,7 @@
                             </constraints>
                         </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="EY3-Bi-kiT">
-                            <frame key="frameInset" minY="442" width="375" height="80"/>
+                            <frame key="frameInset" minY="536" width="375" height="80"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nZ8-bO-VNy">
@@ -77,7 +70,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" textLabel="xfF-Hk-YYB" rowHeight="33" style="IBUITableViewCellStyleDefault" id="Vci-UA-GPn">
-                                <frame key="frameInset" minY="391" width="375" height="33"/>
+                                <frame key="frameInset" minY="485" width="375" height="33"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Vci-UA-GPn" id="Di1-bj-bKS">
                                     <frame key="frameInset" width="375" height="33"/>
@@ -100,9 +93,12 @@
                             <outlet property="delegate" destination="i5u-XL-yKC" id="ibI-Dn-JpB"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Ping!" id="B2h-Ce-EAo">
-                        <barButtonItem key="leftBarButtonItem" title="Settings" id="iv1-m8-H74">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <navigationItem key="navigationItem" title="Song: Feel Good Inc" prompt="Artist: Gorillaz" id="B2h-Ce-EAo">
+                        <barButtonItem key="leftBarButtonItem" image="Pause" id="YkQ-v8-SE9" userLabel="Pause/Play">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="killSwitch" destination="i5u-XL-yKC" id="21B-9K-N8z"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
@@ -115,7 +111,32 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="btH-SP-LiA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="1970.4000000000001" y="405.24737631184411"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="wBe-Nr-KCO">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="N7E-5e-86y" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6dt-bi-1O9">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.0023689060760000002" green="0.83427483970000005" blue="0.003675573467" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="i5u-XL-yKC" kind="relationship" relationship="rootViewController" id="t1N-7M-pRK"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7IT-I5-bTn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
             <point key="canvasLocation" x="1031.2" y="405.24737631184411"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Pause" width="22" height="22"/>
+    </resources>
 </document>
