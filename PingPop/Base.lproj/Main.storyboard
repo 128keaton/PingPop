@@ -35,15 +35,17 @@
                                         <action selector="chooseMusic" destination="i5u-XL-yKC" eventType="touchUpInside" id="MHW-s6-A47"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IfN-te-cYs">
-                                    <state key="normal" title="⚙"/>
-                                </button>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6iZ-6K-YgL">
+                                    <frame key="frameInset" minX="8" minY="314" width="359" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstItem="gfq-ok-X5h" firstAttribute="top" secondItem="bdF-lD-0kI" secondAttribute="top" constant="55" id="7GL-dy-nK8"/>
-                                <constraint firstItem="IfN-te-cYs" firstAttribute="top" secondItem="bdF-lD-0kI" secondAttribute="top" constant="25" id="L3i-Dp-TXL"/>
-                                <constraint firstAttribute="trailing" secondItem="IfN-te-cYs" secondAttribute="trailing" constant="8" id="UAJ-XQ-ie1"/>
                                 <constraint firstItem="gfq-ok-X5h" firstAttribute="bottom" secondItem="bdF-lD-0kI" secondAttribute="bottomMargin" constant="-48" id="po3-IC-ggo"/>
                                 <constraint firstItem="gfq-ok-X5h" firstAttribute="centerX" secondItem="bdF-lD-0kI" secondAttribute="centerX" id="r83-4q-DVQ"/>
                             </constraints>

@@ -19,6 +19,7 @@
 		8A6BE7411D1A5472008E037A /* beep-holdtone.aif in Resources */ = {isa = PBXBuildFile; fileRef = 8A6BE7401D1A5472008E037A /* beep-holdtone.aif */; };
 		8AAE453E1D1A6372008F6CFC /* ChooseFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE453D1D1A6372008F6CFC /* ChooseFile.swift */; };
 		8AAE45401D1A71AF008F6CFC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AAE453F1D1A71AF008F6CFC /* SettingsView.swift */; };
+		8AFC1EAB1D2399F200E896BF /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = 8AFC1EAA1D2399F200E896BF /* AppIcon.appiconset */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		8A6BE7401D1A5472008E037A /* beep-holdtone.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = "beep-holdtone.aif"; sourceTree = "<group>"; };
 		8AAE453D1D1A6372008F6CFC /* ChooseFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseFile.swift; sourceTree = "<group>"; };
 		8AAE453F1D1A71AF008F6CFC /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		8AFC1EAA1D2399F200E896BF /* AppIcon.appiconset */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AppIcon.appiconset; sourceTree = "<group>"; };
 		A5F2BC60B318F0A9FCAE5FFB /* Pods-PingPop.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PingPop.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PingPop/Pods-PingPop.debug.xcconfig"; sourceTree = "<group>"; };
 		FD03F74298E24F71B86C2E67 /* Pods-PingPop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PingPop.release.xcconfig"; path = "Pods/Target Support Files/Pods-PingPop/Pods-PingPop.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -120,6 +122,7 @@
 		8A6BE70D1D1A40E8008E037A /* PingPop */ = {
 			isa = PBXGroup;
 			children = (
+				8AFC1EAA1D2399F200E896BF /* AppIcon.appiconset */,
 				8A6BE7401D1A5472008E037A /* beep-holdtone.aif */,
 				8A6BE73C1D1A41AB008E037A /* PopNet.swift */,
 				8A6BE70E1D1A40E8008E037A /* AppDelegate.swift */,
@@ -276,6 +279,7 @@
 				8A6BE7191D1A40E8008E037A /* LaunchScreen.storyboard in Resources */,
 				8A6BE7411D1A5472008E037A /* beep-holdtone.aif in Resources */,
 				8A6BE7161D1A40E8008E037A /* Assets.xcassets in Resources */,
+				8AFC1EAB1D2399F200E896BF /* AppIcon.appiconset in Resources */,
 				8A6BE7141D1A40E8008E037A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

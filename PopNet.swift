@@ -49,53 +49,19 @@ class PopNet : NSObject {
         MBProgressHUD.hideAllHUDsForView((self.delegate as! ViewController).view, animated: true)
     }
     func streamMedia(data: NSData){
-        print("sending message")
+        print("Streaming Media")
         if session.connectedPeers.count > 0 {
             for peer in session.connectedPeers{
-     
-              
+                
+                
                 try! session.sendData(data, toPeers: [peer], withMode: MCSessionSendDataMode.Reliable)
-          
+                
                 NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: #selector(PopNet.cancel), userInfo: nil, repeats: false)
             }
         }
     }
-
-    
-    
-    func sendMessage(command: String) {
-        print("sending message")
-        if session.connectedPeers.count > 0 {
-            for peer in session.connectedPeers{
-                let rootView = (self.delegate as! ViewController).view
-                MBProgressHUD.showHUDAddedTo(rootView, animated: true)
-                let file = "command.txt"
-                if let dir = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.AllDomainsMask, true).first {
-                    let path = NSURL(fileURLWithPath: dir).URLByAppendingPathComponent(file)
-                    
-                 
-                    do {
-                        try NSFileManager.defaultManager().removeItemAtPath(String(path))
-                        try command.writeToURL(path!, atomically: false, encoding: NSUTF8StringEncoding)
-                        
-                        session.sendResourceAtURL(path!, withName: path!.lastPathComponent!, toPeer: peer, withCompletionHandler: {error in print(error)
-                            dispatch_async(dispatch_get_main_queue()) {
-                                MBProgressHUD.hideAllHUDsForView(rootView, animated: true)
-                            }
-                        })
-
-                    }
-                    catch {/* error handling here */}
-                    
-                }
-                                NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: #selector(PopNet.cancel), userInfo: nil, repeats: false)
-            }
-            }
-    }
     
 }
-
-
 
 
 extension PopNet : MCNearbyServiceAdvertiserDelegate {
@@ -122,32 +88,11 @@ extension MCSessionState {
 protocol PopNetMessageDelegate {
     
     func connectedDevicesChanged(manager : PopNet, connectedDevices: [String])
-    func pingPop(manager : PopNet, message: NSData)
-    func playURL(manager: PopNet, message: NSURL)
+    func playMedia(manager: PopNet, message: NSData)
     
 }
 
 extension PopNet : MCSessionDelegate {
-    
- /**   func session(session: MCSession!, peer peerID: MCPeerID!, didChangeState state: MCSessionState) {
-        NSLog("%@", "peer \(peerID) didChangeState: \(state.stringValue())")
-    }
-    
-    func session(session: MCSession!, didReceiveData data: NSData!, fromPeer peerID: MCPeerID!) {
-        NSLog("%@", "didReceiveData: \(data)")
-    }
-    
-    func session(session: MCSession!, didReceiveStream stream: NSInputStream!, withName streamName: String!, fromPeer peerID: MCPeerID!) {
-        NSLog("%@", "didReceiveStream")
-    }
-    
-    func session(session: MCSession!, didFinishReceivingResourceWithName resourceName: String!, fromPeer peerID: MCPeerID!, atURL localURL: NSURL!, withError error: NSError!) {
-        NSLog("%@", "didFinishReceivingResourceWithName")
-    }
-    
-    func session(session: MCSession!, didStartReceivingResourceWithName resourceName: String!, fromPeer peerID: MCPeerID!, withProgress progress: NSProgress!) {
-        NSLog("%@", "didStartReceivingResourceWithName")
-    }**/
     
     func session(session: MCSession, peer peerID: MCPeerID, didChangeState state: MCSessionState) {
         print("state changed")
@@ -155,9 +100,8 @@ extension PopNet : MCSessionDelegate {
     }
     func session(session: MCSession, didReceiveData data: NSData, fromPeer peerID: MCPeerID) {
         print("data recieved")
-    
-        self.delegate?.pingPop(self, message: data)
-      
+        self.delegate?.playMedia(self, message: data)
+        
     }
     func session(session: MCSession, didReceiveStream stream: NSInputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
         print("there is a stream, with fish in it!")
@@ -168,10 +112,7 @@ extension PopNet : MCSessionDelegate {
     func session(session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, atURL localURL: NSURL, withError error: NSError?) {
         
         print("oh, its from \(peerID)")
-        if UIApplication.sharedApplication().applicationState == UIApplicationState.Active{
-        
-            self.delegate?.playURL(self, message: localURL)
-        }
+      
     }
     
 }

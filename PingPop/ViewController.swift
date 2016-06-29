@@ -13,6 +13,7 @@ import MediaPlayer
 import MBProgressHUD
 import FXBlurView
 
+
 class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
     let pingPopManager: PopNet? = PopNet()
     var connectedDevicesList: [String]? = []
@@ -22,12 +23,15 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
     @IBOutlet weak var stopButton: UIButton?
     var mediaPicker: MPMediaPickerController? = nil
     var isPlaying: Bool? = false
-    var blurView: FXBlurView?
+    var blurView: UIVisualEffectView?
     var imageView: UIImageView?
     
     let pauseColor: UIColor? = UIColor(hue: 0.0222, saturation: 1, brightness: 0.96, alpha: 1.0)
     var playColor: UIColor?
     
+
+    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,8 +42,10 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
         chooseButton?.layer.cornerRadius = 13
         mediaPicker = MPMediaPickerController.init(mediaTypes: MPMediaType.AnyAudio)
         mediaPicker?.delegate = self
+        stopButton?.backgroundColor = UIColor(hue: 0.1972, saturation: 1, brightness: 0.67, alpha: 1.0)
         mediaPicker?.allowsPickingMultipleItems = false
-        
+        stopButton?.alpha = 0
+ 
 
     }
     func makeBlurView(image: UIImage){
@@ -51,10 +57,12 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
             imageView?.contentMode = .ScaleAspectFill
         }
         if blurView == nil{
-            blurView = FXBlurView.init(frame: self.view.frame)
-            blurView!.tintColor = UIColor.blackColor()
+            let blurEffect = UIBlurEffect(style: .Dark)
+            blurView = UIVisualEffectView.init(effect: blurEffect)
+            blurView?.frame = self.view.frame
             self.view.insertSubview(blurView!, aboveSubview: imageView!)
-        }
+                  }
+        
         imageView!.image = image
     }
 
@@ -106,6 +114,7 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
             mediaPicker.presentViewController(alert, animated: true, completion: nil)
         }
     }
+
     
     func sendSong(media: MPMediaItem){
     
@@ -121,6 +130,7 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
         let exportPathString = String(documentsDir) + (titleMedia as String) + ".m4a"
         UIView.transitionWithView(self.view, duration: 0.25, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { (action) in
             self.chooseButton?.setBackgroundImage(media.artwork?.imageWithSize(CGSizeMake(100, 100)), forState: .Normal)
+            
             self.chooseButton?.setTitle("", forState: .Normal)
             }, completion: nil)
         
@@ -164,6 +174,7 @@ class ViewController: UITableViewController, MPMediaPickerControllerDelegate {
     }
 }
 
+
 extension ViewController: PopNetMessageDelegate{
     func connectedDevicesChanged(manager: PopNet, connectedDevices: [String]) {
         
@@ -180,44 +191,6 @@ extension ViewController: PopNetMessageDelegate{
     func mediaPickerDidCancel(mediaPicker: MPMediaPickerController) {
         mediaPicker.dismissViewControllerAnimated(true, completion: nil)
     }
-    func playURL(manager: PopNet, message: NSURL) {
-        /*try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
-        try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-        try! AVAudioSession.sharedInstance().setActive(true)
-        UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
-        try! audioPlayer = AVAudioPlayer(data: NSData(contentsOfURL: message)!)
-        try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
-        if NSUserDefaults.standardUserDefaults().boolForKey("loop") == true {
-            audioPlayer.numberOfLoops = -1
-        }
-        audioPlayer.prepareToPlay()
-        audioPlayer.play()*/
-        let file = "command.txt" //this is the file. we will write to and read from it
-        
-        if let dir = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.AllDomainsMask, true).first {
-            let path = NSURL(fileURLWithPath: dir).URLByAppendingPathComponent(file)
-            
-    
-            
-            //reading
-            do {
-                let text2 = try NSString(contentsOfURL: message, encoding: NSUTF8StringEncoding)
-                
-                try NSFileManager.defaultManager().removeItemAtURL(path!)
-                let alert = UIAlertController.init(title: "Command", message: text2 as String, preferredStyle: .Alert)
-                let okButton = UIAlertAction.init(title: "Ok", style: .Default, handler: { (action) in
-                    alert.dismissViewControllerAnimated(true, completion: nil)})
-                alert.addAction(okButton)
-                self.presentViewController(alert, animated: true, completion: nil)
-                print("We gots ourself a co-mand")
-                
-            }catch {/* error handling here */}
-        }
-        
-        
-        
-        print("message Received")
-    }
     func randomStringWithLength (len : Int) -> NSString {
         
         let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -233,7 +206,7 @@ extension ViewController: PopNetMessageDelegate{
         return randomString
     }
     
-    func pingPop(manager: PopNet, message: NSData) {
+    func playMedia(manager: PopNet, message: NSData) {
 
         let objectDict:NSDictionary? = NSKeyedUnarchiver.unarchiveObjectWithData(message)! as? NSDictionary
         if objectDict?.objectForKey("media") != nil{
@@ -244,9 +217,10 @@ extension ViewController: PopNetMessageDelegate{
         dispatch_async(dispatch_get_main_queue()) {
                    UIView.transitionWithView(self.view, duration: 0.25, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { (action) in
                       self.chooseButton?.setBackgroundImage(objectDict?.objectForKey("artwork") as? UIImage, forState: .Normal)
+                                self.makeBlurView((objectDict!.objectForKey("artwork") as? UIImage)!)
                    }, completion: nil)
     
-            self.makeBlurView((objectDict!.objectForKey("artwork") as? UIImage)!)
+
             self.chooseButton?.setTitle("", forState: .Normal)
             let objectDict : [String:AnyObject] = ["playing" : true]
             self.pingPopManager?.streamMedia(NSKeyedArchiver.archivedDataWithRootObject(objectDict))
@@ -269,6 +243,10 @@ extension ViewController: PopNetMessageDelegate{
                     
                     
                     audioPlayer.pause()
+                    let pauseHud = MBProgressHUD.init(forView: self.view)
+                    pauseHud.labelText = "Paused"
+                    pauseHud.mode = .Text
+                    pauseHud.show(true)
                     let objectDict : [String:AnyObject] = ["playing" : false]
                     self.pingPopManager?.streamMedia(NSKeyedArchiver.archivedDataWithRootObject(objectDict))
                     
@@ -276,6 +254,7 @@ extension ViewController: PopNetMessageDelegate{
                 
                 case .Play:
                     audioPlayer.play()
+                    MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
                     let objectDict : [String:AnyObject] = ["playing" : true]
                     self.pingPopManager?.streamMedia(NSKeyedArchiver.archivedDataWithRootObject(objectDict))
                 break
@@ -284,6 +263,9 @@ extension ViewController: PopNetMessageDelegate{
         }else{
              dispatch_async(dispatch_get_main_queue()) {
                 self.isPlaying = objectDict?.objectForKey("playing") as? Bool
+                        UIView.transitionWithView(self.view, duration: 0.25, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { (action) in
+                            self.stopButton?.alpha = 1.0
+                        }, completion: nil)
                 self.stopButton?.enabled = true
                 if self.isPlaying == true{
                     self.stopButton?.backgroundColor = self.pauseColor
